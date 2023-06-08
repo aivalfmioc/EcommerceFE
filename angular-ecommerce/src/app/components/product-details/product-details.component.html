@@ -2,11 +2,18 @@
     <div class="container-fluid">
    <img src="{{ product.imageUrl}}" class="detail-img">
    <h3>{{ product.name}}</h3>
-   <div class="price">{{ product.unitPrice | currency:'USD' }}</div>
+   
+   <ngb-rating [max]="5" [readonly]="true" [rate]="Finalrating" ></ngb-rating>
+   <p>{{Finalrating}} - rating from {{ratingcount}} users</p>
+   <div class="price">{{ product.unitPrice | currency:'USD' }}
+     
+   </div>
    <button (click)="addToCart()" class="btn btn-primary btn-sm">Add to cart</button>
    <hr>
    <h4>Description</h4>
    <p>{{ product.description }}</p>
+   <h5>Have you read this book? Input your rating!     <ngb-rating [max]="5" (click)="getRating()" [formControl]="ratingcontrol"></ngb-rating></h5>
    <a routerLink="/products" class="mt-5">Back to Product List</a>
     </div>
+
 </div>
