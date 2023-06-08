@@ -13,6 +13,7 @@
                         <a routerLink="/products/{{ tempProduct.id }}">
                             <h1>{{ tempProduct.name}}</h1>
                         </a>
+                        <ngb-rating id="overall_rating" [max]="5" [readonly]="true" ></ngb-rating>
                         <div class="price">{{ tempProduct.unitPrice | currency:'USD'}}</div>
                         <button (click)="addToCart(tempProduct)"class="btn btn-primary btn-sm">Add to cart</button>
                     </div>
