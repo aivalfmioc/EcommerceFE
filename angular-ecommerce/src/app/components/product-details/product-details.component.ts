@@ -4,6 +4,7 @@ import { CartItem } from 'src/app/common/cart-item';
 import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
 import { CartService } from 'src/app/services/cart.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
@@ -24,6 +25,9 @@ export class ProductDetailsComponent implements OnInit {
     }
     )
   }
+  ratingcount = 0;
+  totalrating = 0;
+  Finalrating: any;
   handleProductDetails() {
     //get the id param string. convert string to a number using the + symbol
     const theProductId: number = +this.route.snapshot.paramMap.get('id')!;
@@ -38,6 +42,14 @@ export class ProductDetailsComponent implements OnInit {
     let theCartItem = new CartItem(this.product.id, this.product.name, this.product.imageUrl, this.product.unitPrice);
   
     this.cartService.addToCart(theCartItem);
+  }
+
+  ratingcontrol= new FormControl(0);
+  getRating(){
+    this.ratingcount++;
+    this.totalrating += this.ratingcontrol?.value || 0;
+    this.Finalrating= (this.totalrating/this.ratingcount).toFixed(2);
+    console.log(this.ratingcontrol.value);
   }
 
 }
