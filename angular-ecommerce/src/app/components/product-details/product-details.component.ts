@@ -5,6 +5,8 @@ import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
 import { CartService } from 'src/app/services/cart.service';
 import { FormControl } from '@angular/forms';
+import { WishlistService } from 'src/app/services/wishlist.service';
+import { Wishlist } from 'src/app/common/wishlist';
 
 @Component({
   selector: 'app-product-details',
@@ -17,6 +19,7 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(private productService: ProductService,
               private cartService: CartService,
+              private wishlistService: WishlistService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -51,5 +54,9 @@ export class ProductDetailsComponent implements OnInit {
     this.Finalrating= (this.totalrating/this.ratingcount).toFixed(2);
     console.log(this.ratingcontrol.value);
   }
-
+  addToWishlist(theProduct: Product) {
+    console.log(`Adding to wishlist: ${theProduct.name}, ${theProduct.imageUrl} ,${theProduct.unitPrice}`)
+    let theWishlist = new Wishlist(theProduct.id, theProduct.name, theProduct.imageUrl, theProduct.unitPrice);
+    this.wishlistService.addToWishlist(theWishlist);
+  }
 }

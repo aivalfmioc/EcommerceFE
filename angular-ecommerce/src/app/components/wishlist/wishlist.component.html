@@ -13,10 +13,15 @@
 
                     <tr *ngFor="let tempWishlistItem of wishlistItems">
                         <td>
+                            <a routerLink="/products/{{ tempWishlistItem.id }}">
                             <img src="{{ tempWishlistItem.imageUrl }}" class="img-fluid w-100" />
+                        </a>
                         </td>
                         <td>
+                            
+                            <a routerLink="/products/{{ tempWishlistItem.id }}">
                             <p>{{ tempWishlistItem.name }}</p>
+                            </a>
                             <p>{{ tempWishlistItem.unitPrice | currency: 'USD' }}</p>
                         </td>
                         <td>
