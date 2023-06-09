@@ -10,6 +10,7 @@ import { Routes, RouterModule, Router} from '@angular/router';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './components/search/search.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
@@ -33,7 +34,11 @@ import myAppConfig from './config/my-app-config';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
 import { Order } from './common/order';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-
+import { FilterpanelComponent } from './components/filterpanel/filterpanel.component';
+import { BookComponent } from './animations/book/book.component';
+import { LottieModule } from 'ngx-lottie'
+import player from 'lottie-web';
+import { WishlistComponent } from './components/wishlist/wishlist.component';
 const oktaConfig = myAppConfig.oidc;
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -56,7 +61,9 @@ const routes: Routes = [
   {path: 'category', component: ProductListComponent},
   {path: 'products', component: ProductListComponent},
   {path: 'cart-details', component: CartDetailsComponent},
+  {path: 'book', component: BookComponent},
   {path: 'order-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard],  data: {onAuthRequired: sendToLoginPage} }, //, data: {onAuthRequired: sendToLoginPage}
+  {path: 'wishlist', component: WishlistComponent},
   {path: '', redirectTo: '/products', pathMatch:'full'},
   {path: '**', redirectTo:'/products', pathMatch:'full'}
 
@@ -73,7 +80,10 @@ const routes: Routes = [
     CheckoutComponent,
     LoginComponent,
     LoginStatusComponent,
-    OrderHistoryComponent
+    OrderHistoryComponent,
+    FilterpanelComponent,
+    BookComponent,
+    WishlistComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -86,7 +96,11 @@ const routes: Routes = [
     NgbModule,
     MatToolbarModule,
     MatListModule,
-    OktaAuthModule
+    OktaAuthModule,
+    LottieModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [ProductService, { provide: OKTA_CONFIG, useValue: { oktaAuth }}, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]

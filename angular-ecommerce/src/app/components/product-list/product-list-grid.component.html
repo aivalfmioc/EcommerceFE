@@ -15,6 +15,7 @@
                         </a>
                         <ngb-rating id="overall_rating" [max]="5" [readonly]="true" ></ngb-rating>
                         <div class="price">{{ tempProduct.unitPrice | currency:'USD'}}</div>
+                        <button (click)="addToWishlist(tempProduct)" class='fas fa-heart'></button>
                         <button (click)="addToCart(tempProduct)"class="btn btn-primary btn-sm">Add to cart</button>
                     </div>
                 </div>

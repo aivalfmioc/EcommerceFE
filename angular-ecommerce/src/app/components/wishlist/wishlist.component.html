@@ -1,0 +1,45 @@
+<div class="main-content">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+
+            <div *ngIf="wishlistItems.length > 0">
+
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="20%">Product Image</th>
+                        <th width="50%">Product Detail</th>
+                        <th width="30%"></th>
+                    </tr>
+
+                    <tr *ngFor="let tempWishlistItem of wishlistItems">
+                        <td>
+                            <img src="{{ tempWishlistItem.imageUrl }}" class="img-fluid w-100" />
+                        </td>
+                        <td>
+                            <p>{{ tempWishlistItem.name }}</p>
+                            <p>{{ tempWishlistItem.unitPrice | currency: 'USD' }}</p>
+                        </td>
+                        <td>
+                       
+
+                            <div>
+                                <button (click)="remove(tempWishlistItem)" class="fas fa-trash-alt mr-1">Remove</button>
+                            </div>
+
+                            <p class="mt-2"></p>
+                        </td>
+                    </tr>
+
+
+                </table>
+
+            </div>
+
+            <!-- if wishlist is empty then display a message -->
+            <div *ngIf="wishlistItems.length == 0" class="alert alert-warning col-md-12" role="alert">
+                Your wishlist is empty. Click on the heart to add!
+            </div>
+
+        </div>
+    </div>
+</div>
