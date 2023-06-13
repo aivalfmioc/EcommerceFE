@@ -1,14 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Wishlist } from '../common/wishlist';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WishlistService {
 
-  wishlistItems: Wishlist[] = [];
-  constructor() { }
+  private wishlistUrl = environment.luv2shopApiUrl+'wishlist';
 
+  wishlistItems: Wishlist[] = [];
+
+  constructor(private httpClient: HttpClient) { }
+
+  getWishlist(theEmail: string): Observable<GetResponseWishlist> {
+    const wishlistHistoryUrl = `${this.wishlistUrl}/search/findByCustomerEmailWishlist?email=${theEmail}`;
+
+     return this.httpClient.get<GetResponseWishlist>(wishlistHistoryUrl);
+  }
   addToWishlist(theWishlist: Wishlist) { 
     // // check if we already have the item in our cart
     let alreadyExistsInWishlist: boolean = false;
@@ -42,5 +53,9 @@ export class WishlistService {
     }
   }
 
-
 }
+  interface GetResponseWishlist {
+    _embedded: {
+      wishlist: Wishlist[];
+    }
+  }

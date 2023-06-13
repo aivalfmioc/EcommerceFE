@@ -36,6 +36,9 @@ export class CheckoutComponent implements OnInit {
   cardElement: any;
   displayError: any = "";
 
+  
+  isDisabled: boolean = false;
+
   constructor(private formBuilder: FormBuilder,
               private shopFormService: ShopFormService,
               private cartService: CartService,
@@ -63,15 +66,15 @@ export class CheckoutComponent implements OnInit {
         city: new FormControl('', [Validators.required, Validators.minLength(2), ShopValidators.notOnlyWhitespace]),
         country: new FormControl('', [Validators.required]),
         zipCode: new FormControl('', [Validators.required, Validators.minLength(2), ShopValidators.notOnlyWhitespace])
-       })
-      // creditCard: this.formBuilder.group({
+       }),
+       creditCard: this.formBuilder.group({
       //   cardType: new FormControl('', [Validators.required]),
       //   nameOnCard:new FormControl('', [Validators.required, Validators.minLength(2), ShopValidators.notOnlyWhitespace]),
       //   cardNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}'), ShopValidators.notOnlyWhitespace]),
       //   securityCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}'), ShopValidators.notOnlyWhitespace]),
       //   expirationMonth: [''],
       //   expirationYear: ['']
-      // })
+       })
     });
  
     // populate credit card months
@@ -95,7 +98,6 @@ export class CheckoutComponent implements OnInit {
     //   }
     // );
  
- 
   }
   setupStripePaymentForm() {
     //get a handle to stripe elements
@@ -116,7 +118,7 @@ export class CheckoutComponent implements OnInit {
       else if(event.error){
         this.displayError.textContent = event.error.message;
       }
-    })
+    });
   }
  
   reviewCartDetails() {
@@ -176,21 +178,39 @@ export class CheckoutComponent implements OnInit {
     purchase.order = order;
     purchase.orderItems = orderItems;
     //compute payment info
-    this.paymentInfo.amount = this.totalPrice * 100 ;
+    this.paymentInfo.amount = Math.round(this.totalPrice * 100) ;
     this.paymentInfo.currency = "USD";
+    this.paymentInfo.receiptEmail = purchase.customer.email;
+
+    console.log(`this.paymentInfo.amount: ${this.paymentInfo.amount}`)
+
     //call REST API via the checkoutservice
     // if valid form then create payment intent, confirm card payment place order
     if(!this.checkoutFormGroup.invalid && this.displayError.textContent === "" ){
+      
+      this.isDisabled = true;
+
       this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
           this.stripe.confirmCardPayment(paymentIntentResponse.client_secret, {
             payment_method: {
-              card: this.cardElement
+              card: this.cardElement,
+              billing_details: {
+                email: purchase.customer.email,
+                name: `${purchase.customer.firstName} ${purchase.customer.lastName}`,
+                address: {
+                  line1: purchase.shippingAddress.street,
+                  city: purchase.shippingAddress.city,
+                  postal_code: purchase.shippingAddress.zipCode,
+                  country: purchase.shippingAddress.country
+                }
+              }
             }
           }, { handleActions: false})
           .then((result:any) => {
             if(result.error) {
               alert(`There was an error: ${result.error.message}`);
+              this.isDisabled = false;
             }
             else { //calll rest api via th checkout service
               this.checkoutService.placeOrder(purchase).subscribe({
@@ -198,9 +218,11 @@ export class CheckoutComponent implements OnInit {
                   alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`)
                   //reset card
                   this.resetCart();
+                  this.isDisabled = false;
                 },
                 error: (err: any) => {
                   alert(`There was an error: ${err.message}`);
+                  this.isDisabled = false;
                 }
               })
 
@@ -220,7 +242,7 @@ export class CheckoutComponent implements OnInit {
     this.cartService.cartItems = [];
     this.cartService.totalPrice.next(0);
     this.cartService.totalQuantity.next(0);
- 
+    this.cartService.persistCartItems();
     //reset the form
     this.checkoutFormGroup.reset();
  

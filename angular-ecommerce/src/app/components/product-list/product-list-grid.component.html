@@ -1,7 +1,18 @@
 <div class="main-content">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
+            <div class="col"   position= "relative" left="1490px">
+                <select  (change)="sortProductByPrice($event.target)" position= "relative" left="1490px" >
+                  <option selected value="undefined" disabled   position= "relative" left="1490px">
+                    Choose Category
+                  </option>
+                  <option value="l2h">Price: Low to High</option>
+                  <option value="h2l">Price: High to Low</option>
+                </select>
+                <p></p>
+              </div>
             <div class="row">
+               
                 <!--loop over collection of products-->
                 <div *ngFor="let tempProduct of products" class="col-md-3">
                     <div class="product-box">
@@ -23,7 +34,7 @@
                 <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
                     No products found
                 </div>
-
+           
 
 
             </div>

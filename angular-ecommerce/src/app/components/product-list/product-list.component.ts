@@ -115,5 +115,12 @@ export class ProductListComponent implements OnInit {
     let theWishlist = new Wishlist(theProduct.id, theProduct.name, theProduct.imageUrl, theProduct.unitPrice);
     this.wishlistService.addToWishlist(theWishlist);
     }
+  sortProductByPrice(option){
+    if(option.value =='l2h'){
+        this.products.sort((a, b) => Number(a.unitPrice) - Number(b.unitPrice));
+    }else if(option.value =='h2l'){
+        this.products.sort((a, b) => Number(b.unitPrice) - Number(a.unitPrice));
+    }
+  }
 
 }

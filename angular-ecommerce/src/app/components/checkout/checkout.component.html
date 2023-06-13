@@ -411,11 +411,6 @@
                     </div>
 
                 </div>
-
-
-
-
-
                 <!-- Credit Card -->
                
                   <!-- stripe elemwnts credit card section -->
@@ -441,7 +436,7 @@
 
                 <!-- submit button-->
                 <div class="text-center" (ngSubmit)="onSubmit()">
-                    <button class="button">
+                    <button class="button" [disabled]="isDisabled">
                         <span class="button__text">
                           <span>Buy</span>
                         </span>
