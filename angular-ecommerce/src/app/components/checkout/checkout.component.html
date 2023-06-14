@@ -1,3 +1,7 @@
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sweetalert2.all.min.js"></script> 
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="checkout.component.css">
 <div class="main-content page-m">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
@@ -433,7 +437,6 @@
                     <p>Shipping: FREE</p>
                     <p>Total Price: {{ totalPrice | currency: 'USD' }}</p>
                 </div>
-
                 <!-- submit button-->
                 <div class="text-center" (ngSubmit)="onSubmit()">
                     <button class="button" [disabled]="isDisabled">

@@ -10,6 +10,7 @@ import { CheckoutService } from 'src/app/services/checkout.service';
 import { ShopFormService } from 'src/app/services/shop-form.service';
 import { ShopValidators } from 'src/app/validators/shop-validators';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
  
  
 @Component({
@@ -215,7 +216,13 @@ export class CheckoutComponent implements OnInit {
             else { //calll rest api via th checkout service
               this.checkoutService.placeOrder(purchase).subscribe({
                 next: (response: any) => {
-                  alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`)
+                  // alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`)
+                  this.showSuccessMessage(
+                    'Your order has been received',
+                    'Thank you for shopping with us❤️',
+                    'success',
+                    true,
+                )
                   //reset card
                   this.resetCart();
                   this.isDisabled = false;
@@ -236,6 +243,15 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
+  }
+  showSuccessMessage(title, message, icon = null,
+    showCancelButton = false){
+    return Swal.fire({
+      title: title,
+      text: message,
+      icon: icon,
+      showCancelButton: showCancelButton
+    })
   }
   resetCart() {
     // reset cart data
