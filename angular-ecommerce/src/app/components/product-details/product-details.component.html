@@ -1,21 +1,63 @@
-<div class = "detail-section">
+<div class = "detail-section" *ngIf="product">
     <div class="container-fluid">
-   <img src="{{ product.imageUrl}}" class="detail-img">
-   <h3>{{ product.name}}</h3>
-   
-   <ngb-rating id="overall_rating" [max]="5" [readonly]="true" [rate]="Finalrating" ></ngb-rating>
-   <p>{{Finalrating}} - rating from {{ratingcount}} users</p>
-   <div class="price">{{ product.unitPrice | currency:'USD' }}
-     
-   </div>
-   <button (click)="addToCart()" class="btn btn-primary btn-sm">Add to cart</button>
-   
-   <button (click)="addToWishlist(product)" class='fas fa-heart'></button>
-   <hr>
-   <h4>Description</h4>
-   <p>{{ product.description }}</p>
-   <h5>Have you read this book? Input your rating!     <ngb-rating [max]="5" (click)="getRating()" [formControl]="ratingcontrol"></ngb-rating></h5>
-   <a routerLink="/products" class="mt-5">Back to Product List</a>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="product-box p-2 rounded shadow">
+                    
+                    <div class="d-flex justify-content-between">
+                        <div></div>
+                        <app-wishlist-icon [product]="product" ></app-wishlist-icon>
+                    </div>
+                    
+                    <img src="{{ product.imageUrl }}" class="card-img-top p-2 rounded">
+
+                    <div class="card-body">
+                
+
+                        <div class="d-flex justify-content-between">
+                            <div>                                
+                                <h5 class="card-title"> {{ product.name }}</h5>
+                                <p class="card-text">{{ product.unitPrice | currency:'USD'}}</p>
+                            </div>
+
+                            <div>
+                                <ngb-rating id="overall_rating" [max]="5" [readonly]="true" [rate]="Finalrating" ></ngb-rating>
+                                <p>{{(Finalrating === 'NaN') ? 0 : Finalrating}} - rating from {{ratingcount}} users</p>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <h4>Description</h4>
+                <p>{{ product.description }}</p>
+                <h5>Have you read this book? Input your rating!  
+
+                     <!-- <ngb-rating [max]="5" (click)="postRating()" [formControl]="ratingcontrol"></ngb-rating> -->
+
+                     <ngb-rating *ngIf="isAuthenticated" [max]="5" (click)="postRating()" [formControl]="ratingcontrol"></ngb-rating>
+                     <a routerLink="/login" style="text-decoration: none;">
+                         <ngb-rating *ngIf="!isAuthenticated" [max]="5" [formControl]="ratingcontrol"></ngb-rating>
+                     </a>
+
+                </h5>
+                <div class="d-flex">
+                    <button (click)="addToCart()"class="btn btn-primary btn-sm" style="margin-right: 10px;">Add to cart</button> 
+                </div>
+
+                <br>
+                <a routerLink="/products" class="mt-5">Back to Product List</a>
+            </div>
+        </div>
+
+        
+
     </div>
 
 </div>

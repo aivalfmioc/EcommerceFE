@@ -2,3 +2,17 @@ ngb-rating{
     color: #ffc107;
     font-size:90 px;
 }
+.button-details{
+    background-image: none;
+    box-shadow: none;
+    opacity: .65;
+    pointer-events: none;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}

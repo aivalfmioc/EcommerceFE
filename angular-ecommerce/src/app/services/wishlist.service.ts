@@ -1,34 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Wishlist } from '../common/wishlist';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WishlistService {
 
-  private wishlistUrl = environment.luv2shopApiUrl+'wishlist';
+  // wishlistItems: Wishlist[] = [];
 
-  wishlistItems: Wishlist[] = [];
-
-  constructor(private httpClient: HttpClient) { }
-
-  getWishlist(theEmail: string): Observable<GetResponseWishlist> {
-    const wishlistHistoryUrl = `${this.wishlistUrl}/search/findByCustomerEmailWishlist?email=${theEmail}`;
-
-     return this.httpClient.get<GetResponseWishlist>(wishlistHistoryUrl);
+  wishlistItems:BehaviorSubject<Wishlist[]> = new BehaviorSubject<Wishlist[]>([]);
+  
+  constructor() { 
+    try{
+      let wishlist = JSON.parse(localStorage.getItem("wishlist")) ?? [];
+      this.wishlistItems.next(wishlist);
+    } catch(e) {}
+    
+    
   }
-  addToWishlist(theWishlist: Wishlist) { 
+
+  addToWishlist(theWishlist: any) { 
     // // check if we already have the item in our cart
     let alreadyExistsInWishlist: boolean = false;
     let existingWishlistItem: Wishlist = undefined;
 
-    if (this.wishlistItems.length > 0) {
+    let items:any = this.wishlistItems.getValue();
+  
+    if (items.length > 0) {
     //   // find the item in the cart based on item id
 
-      existingWishlistItem = this.wishlistItems.find( tempWishlistItem =>tempWishlistItem.id === theWishlist.id ) ;
+      existingWishlistItem = items.find( tempWishlistItem =>tempWishlistItem.id === theWishlist.id ) ;
     //   // check if we found it
       alreadyExistsInWishlist = (existingWishlistItem != undefined);
     }
@@ -38,24 +40,26 @@ export class WishlistService {
     }
     else {
       // just add the item to the array
-      this.wishlistItems.push(theWishlist);
+      items.push(theWishlist);
     }
 
+    this.wishlistItems.next(items);
+    localStorage.setItem("wishlist", JSON.stringify(items))
   }
-  remove(theWishlistItem: Wishlist) {
+  remove(theWishlistItem: any) {
+    
+    let items:any = this.wishlistItems.getValue();
+    
+
     // get index of item in the array
-    const itemIndex = this.wishlistItems.findIndex( tempWishlistItem => tempWishlistItem.id === theWishlistItem.id );
+    const itemIndex =items.findIndex( tempWishlistItem => tempWishlistItem.id === theWishlistItem.id );
 
     // if found, remove the item from the array at the given index
     if (itemIndex > -1) {
-      this.wishlistItems.splice(itemIndex, 1);
-
+      items.splice(itemIndex, 1);
     }
-  }
 
+    this.wishlistItems.next(items);
+    localStorage.setItem("wishlist", JSON.stringify(items))  
+  }
 }
-  interface GetResponseWishlist {
-    _embedded: {
-      wishlist: Wishlist[];
-    }
-  }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../common/product';
 import { map } from 'rxjs/operators';
-import { ProductCategory } from '../common/product-category';
+import { ProductCategory, Rating } from '../common/product-category';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class ProductService {
 
   private baseUrl =  environment.luv2shopApiUrl + '/products';
   private categoryUrl =  environment.luv2shopApiUrl +'/product-category';
+  private ratingUrl =  environment.luv2shopApiUrl +'/rating/';
   constructor(private httpClient: HttpClient) { }
 
   getProduct(theProductId: number): Observable<Product> {
@@ -56,6 +57,14 @@ export class ProductService {
     return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
       map(response => response._embedded.productCategory)
     );
+  }
+
+  getRatingsByProductId(id:number):Observable<Rating[]> {
+    return this.httpClient.get<Rating[]>(this.ratingUrl + id);
+  }
+
+  postRating(rating:Rating):Observable<Rating[]> {
+    return this.httpClient.post<Rating[]>(this.ratingUrl, rating);
   }
 
 

@@ -9,30 +9,17 @@ import { WishlistService } from 'src/app/services/wishlist.service';
 export class WishlistComponent implements OnInit {
 
   wishlistItems: Wishlist[] = [];
-  storage: Storage = sessionStorage;
-
   constructor(private wishlistService: WishlistService) { }
 
   ngOnInit(): void {
-    this.handleWishlist();
-  }
-  
-  handleWishlist() {
-    this.wishlistItems = this.wishlistService.wishlistItems;
-   // read the user's email address from browser storage
-   const theEmail = JSON.parse(this.storage.getItem('userEmail')!);
-
-   // retrieve data from the service
-   this.wishlistService.getWishlist(theEmail).subscribe(
-     data => {
-       this.wishlistItems = data._embedded.wishlist;
-     }
-   );
- 
- 
-  }
-  remove(theWishlistItem: Wishlist) {
-    this.wishlistService.remove(theWishlistItem);
+    this.listWishlist();
   }
 
+  listWishlist() {
+    this.wishlistService.wishlistItems.subscribe(items => this.wishlistItems = items);
+  }
+
+  remove(wishlist:any):void {
+    this.wishlistService.remove(wishlist);
+  }
 }

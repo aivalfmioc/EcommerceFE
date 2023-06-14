@@ -1,21 +1,55 @@
+
 <div class="main-content">
+    
     <div class="section-content section-content-p30">
         <div class="container-fluid">
             <div class="col"   position= "relative" left="1490px">
-                <select  (change)="sortProductByPrice($event.target)" position= "relative" left="1490px" >
+                <!-- <select  (change)="sortProductByPrice($event.target)" position= "relative" left="1490px" >
                   <option selected value="undefined" disabled   position= "relative" left="1490px">
                     Choose Category
                   </option>
                   <option value="l2h">Price: Low to High</option>
                   <option value="h2l">Price: High to Low</option>
-                </select>
+                </select> -->
+                <!-- <mat-form-field>
+                    <mat-label>Favorite food</mat-label>
+                    <mat-option matIn *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                      </mat-option>
+                  </mat-form-field> -->
                 <p></p>
               </div>
             <div class="row">
-               
                 <!--loop over collection of products-->
                 <div *ngFor="let tempProduct of products" class="col-md-3">
-                    <div class="product-box">
+                    <div class="product-box card shadow">
+
+                        <div class="content">
+                            <a routerLink="/products/{{ tempProduct.id }}">
+                                <img src="{{ tempProduct.imageUrl }}" class="card-img-top">
+                            </a>
+    
+                            <div class="card-body">
+                                <a routerLink="/products/{{ tempProduct.id }}" style="text-decoration: none;">
+                                    <h5 class="card-title">
+                                        {{ tempProduct.name}}
+                                    </h5>
+                                  </a>
+                                <p class="card-text">{{ tempProduct.unitPrice | currency:'USD'}}</p>
+                            </div>
+                            <button class="button_details">DETAILS</button>
+                        </div>
+
+                        
+                            <div class="icons" style="display: flex; flex-direction: column;">
+                                <button (click)="addToCart(tempProduct)" class='icon fa fa-shopping-cart'></button> 
+                                <app-wishlist-icon [product]="tempProduct" [isHover]="true" ></app-wishlist-icon>
+                            </div>
+                            
+                        
+                    </div>
+
+                    <!-- <div class="product-box card">
 
                         <a routerLink="/products/{{ tempProduct.id }}">
                             <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
@@ -28,24 +62,23 @@
                         <div class="price">{{ tempProduct.unitPrice | currency:'USD'}}</div>
                         <button (click)="addToWishlist(tempProduct)" class='fas fa-heart'></button>
                         <button (click)="addToCart(tempProduct)"class="btn btn-primary btn-sm">Add to cart</button>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- if products are epty display a message  -->
                 <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
                     No products found
                 </div>
-           
+
 
 
             </div>
             <!-- begin footer -->
             <div class = "footer-pagination">
                     <div class="row">
-                        
-                        <div class="col-md-6"></div>
-                        <div class="col-md-6">
+                    
+                        <div class="col-md-1">
                             <div class="row">
-                                <div class="col-md-9" style="padding-left: 30%;">
+                                <div>
                                     <ngb-pagination [(page)]="thePageNumber"
                                                     [pageSize]="thePageSize"
                                                     [collectionSize]="theTotalElements"
@@ -55,7 +88,7 @@
 
                                     </ngb-pagination>
                                 </div>
-                                <div class="col-md-3 mt-2" style="text-align: right;">
+                                <div class="col-md-10"  width="fit-content">
                                     <span class="mr-2">Page Size</span>
                                     <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
                                             <option>2</option>   

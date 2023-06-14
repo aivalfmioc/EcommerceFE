@@ -7,13 +7,29 @@ import { CartItem } from 'src/app/common/cart-item';
 import { Wishlist } from 'src/app/common/wishlist';
 import { WishlistService } from 'src/app/services/wishlist.service';
 
+import {FormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {NgFor} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+interface Food {
+  value: string;
+  viewValue: string;
+}
+
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list-grid.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-
+  foods: Food[] = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'},
+  ];
   products: Product[] = [];
   currentCategoryId: number = 1;
   previousCategoryId: number = 1;
@@ -110,11 +126,6 @@ export class ProductListComponent implements OnInit {
   
   }
 
-  addToWishlist(theProduct: Product) {
-    console.log(`Adding to wishlist: ${theProduct.name}, ${theProduct.imageUrl} ,${theProduct.unitPrice}`)
-    let theWishlist = new Wishlist(theProduct.id, theProduct.name, theProduct.imageUrl, theProduct.unitPrice);
-    this.wishlistService.addToWishlist(theWishlist);
-    }
   sortProductByPrice(option){
     if(option.value =='l2h'){
         this.products.sort((a, b) => Number(a.unitPrice) - Number(b.unitPrice));
@@ -122,5 +133,4 @@ export class ProductListComponent implements OnInit {
         this.products.sort((a, b) => Number(b.unitPrice) - Number(a.unitPrice));
     }
   }
-
 }

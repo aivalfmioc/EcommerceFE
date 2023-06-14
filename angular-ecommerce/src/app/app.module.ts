@@ -34,11 +34,18 @@ import myAppConfig from './config/my-app-config';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
 import { Order } from './common/order';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-import { FilterpanelComponent } from './components/filterpanel/filterpanel.component';
-import { BookComponent } from './animations/book/book.component';
-import { LottieModule } from 'ngx-lottie'
-import player from 'lottie-web';
+
+import {FormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {NgFor} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+// import { FilterpanelComponent } from './components/filterpanel/filterpanel.component';
+// import { BookComponent } from './animations/book/book.component';
+// import { LottieModule } from 'ngx-lottie'
+// import player from 'lottie-web';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
+import { WishlistIconComponent } from './common/wishlist/wishlist-icon/wishlist-icon.component';
 const oktaConfig = myAppConfig.oidc;
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -61,7 +68,7 @@ const routes: Routes = [
   {path: 'category', component: ProductListComponent},
   {path: 'products', component: ProductListComponent},
   {path: 'cart-details', component: CartDetailsComponent},
-  {path: 'book', component: BookComponent},
+  // {path: 'book', component: BookComponent},
   {path: 'order-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard],  data: {onAuthRequired: sendToLoginPage} }, //, data: {onAuthRequired: sendToLoginPage}
   {path: 'wishlist', component: WishlistComponent},
   {path: '', redirectTo: '/products', pathMatch:'full'},
@@ -81,9 +88,10 @@ const routes: Routes = [
     LoginComponent,
     LoginStatusComponent,
     OrderHistoryComponent,
-    FilterpanelComponent,
-    BookComponent,
-    WishlistComponent
+    // FilterpanelComponent,
+    // BookComponent,
+    WishlistComponent,
+    WishlistIconComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -97,7 +105,12 @@ const routes: Routes = [
     MatToolbarModule,
     MatListModule,
     OktaAuthModule,
-    LottieModule
+    MatFormFieldModule,
+    MatSelectModule,
+    NgFor,
+    MatInputModule,
+    FormsModule
+    // LottieModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

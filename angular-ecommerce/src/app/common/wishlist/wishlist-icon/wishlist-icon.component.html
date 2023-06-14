@@ -1,0 +1,26 @@
+<style>
+    .ic {
+        opacity: 1;
+        height: 35px;
+        width: 35px;
+        color: white;
+        background: #0DA8E4;
+        border-radius: 999999px;
+    }
+
+    .ic:hover {
+        transition: all 0.2s;
+        background: #205B8D;
+    }
+
+</style>
+
+<div *ngIf="isHover">
+    <button *ngIf="isWishList"  class='icon fa-solid fa-heart' (click)="removeFromWishList()"></button>
+    <button *ngIf="!isWishList" class='icon fa-regular fa-heart' (click)="addIntoWishList()"></button>
+</div>
+                        
+<div *ngIf="!isHover">
+    <button *ngIf="isWishList"  class='ic fa-solid fa-heart' (click)="removeFromWishList()"></button>
+    <button *ngIf="!isWishList" class='ic fa-regular fa-heart' (click)="addIntoWishList()"></button>
+</div>

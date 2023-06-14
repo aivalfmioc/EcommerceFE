@@ -5,3 +5,10 @@ export class ProductCategory {
                     
                 }
 }
+
+export interface Rating {
+    id: number;
+    productId: number;
+    email: string;
+    ratingNumber: number;
+}

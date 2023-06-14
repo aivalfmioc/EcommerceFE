@@ -37,7 +37,6 @@ export class CheckoutComponent implements OnInit {
   cardElement: any;
   displayError: any = "";
 
-  
   isDisabled: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
@@ -98,6 +97,7 @@ export class CheckoutComponent implements OnInit {
     //     this.creditCardYears = data;
     //   }
     // );
+ 
  
   }
   setupStripePaymentForm() {
@@ -184,13 +184,10 @@ export class CheckoutComponent implements OnInit {
     this.paymentInfo.receiptEmail = purchase.customer.email;
 
     console.log(`this.paymentInfo.amount: ${this.paymentInfo.amount}`)
-
     //call REST API via the checkoutservice
     // if valid form then create payment intent, confirm card payment place order
     if(!this.checkoutFormGroup.invalid && this.displayError.textContent === "" ){
-      
       this.isDisabled = true;
-
       this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
           this.stripe.confirmCardPayment(paymentIntentResponse.client_secret, {
@@ -216,14 +213,14 @@ export class CheckoutComponent implements OnInit {
             else { //calll rest api via th checkout service
               this.checkoutService.placeOrder(purchase).subscribe({
                 next: (response: any) => {
-                  // alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`)
+                //  alert(`Your order has been received\nThank you for shopping with us❤️`)
+                  //reset card
                   this.showSuccessMessage(
                     'Your order has been received',
                     'Thank you for shopping with us❤️',
                     'success',
                     true,
                 )
-                  //reset card
                   this.resetCart();
                   this.isDisabled = false;
                 },
@@ -250,8 +247,18 @@ export class CheckoutComponent implements OnInit {
       title: title,
       text: message,
       icon: icon,
-      showCancelButton: showCancelButton
+      showCancelButton: showCancelButton,
+      cancelButtonColor: '#3085d6' ,
+      cancelButtonText: "See orders"
+    }).then(function(){
+      
+      this.router.navigateByUrl('/order-history');
     })
+    cancel => {
+      if (cancel) {
+        this.router.navigateByUrl('/order-history');
+      }
+    }
   }
   resetCart() {
     // reset cart data
@@ -259,6 +266,7 @@ export class CheckoutComponent implements OnInit {
     this.cartService.totalPrice.next(0);
     this.cartService.totalQuantity.next(0);
     this.cartService.persistCartItems();
+ 
     //reset the form
     this.checkoutFormGroup.reset();
  

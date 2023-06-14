@@ -4,7 +4,6 @@ export class Wishlist {
         public name?: string,
         public imageUrl?: string,
         public unitPrice?: number,
-        
     ){
         
     }
