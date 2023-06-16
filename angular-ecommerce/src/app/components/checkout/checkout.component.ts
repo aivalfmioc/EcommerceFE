@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Order } from 'src/app/common/order';
 import { OrderItem } from 'src/app/common/order-item';
 import { PaymentInfo } from 'src/app/common/payment-info';
+import { Product } from 'src/app/common/product';
 import { Purchase } from 'src/app/common/purchase';
 import { CartService } from 'src/app/services/cart.service';
 import { CheckoutService } from 'src/app/services/checkout.service';
@@ -164,10 +165,14 @@ export class CheckoutComponent implements OnInit {
     order.totalQuantity = this.totalQuantity
     //get cart items
     const cartItems = this.cartService.cartItems;
+
  
     //create orderItems from cartItems
     let orderItems: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem.imageUrl!, tempCartItem.unitPrice!, tempCartItem.quantity, tempCartItem.id!));
  
+    //decrease quantity
+    // let product = new Product()
+
     //set up purchase
     let purchase = new Purchase();
  
@@ -215,6 +220,7 @@ export class CheckoutComponent implements OnInit {
                 next: (response: any) => {
                 //  alert(`Your order has been received\nThank you for shopping with us❤️`)
                   //reset card
+                  
                   this.showSuccessMessage(
                     'Your order has been received',
                     'Thank you for shopping with us❤️',

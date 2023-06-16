@@ -13,9 +13,9 @@ body {
 
 ul {
     align-items: center;
-  flex-direction: column;
-  list-style-type: none;
-  padding-top: 300px;
+    flex-direction: column;
+    list-style-type: none;
+    padding-top: 300px;
     text-transform: uppercase;
 
   li {

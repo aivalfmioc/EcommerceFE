@@ -27,6 +27,8 @@
     "@okta/okta-signin-widget": "^6.2.0",
     "@popperjs/core": "^2.10.2",
     "bootstrap": "^5.2.0",
+    "bootstrap-select": "^1.13.18",
+    "jquery": "^3.7.0",
     "lottie-web": "^5.12.0",
     "ngx-lottie": "^9.1.0",
     "rxjs": "~7.5.0",

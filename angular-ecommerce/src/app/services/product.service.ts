@@ -66,8 +66,13 @@ export class ProductService {
   postRating(rating:Rating):Observable<Rating[]> {
     return this.httpClient.post<Rating[]>(this.ratingUrl, rating);
   }
-
-
+/*
+  decreaseUnitsInStock(id:number){
+    Product product = new Product();
+    Product.unitsInStock 
+    
+  }
+  */
 }
 
 interface GetResponseProducts{

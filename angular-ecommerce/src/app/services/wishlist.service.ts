@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Wishlist } from '../common/wishlist';
 import { BehaviorSubject } from 'rxjs';
+import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
+import OktaAuth from '@okta/okta-auth-js';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +10,40 @@ import { BehaviorSubject } from 'rxjs';
 export class WishlistService {
 
   // wishlistItems: Wishlist[] = [];
+  isAuthenticated: boolean = false;
+  userEmail:string = "";
 
   wishlistItems:BehaviorSubject<Wishlist[]> = new BehaviorSubject<Wishlist[]>([]);
   
-  constructor() { 
-    try{
-      let wishlist = JSON.parse(localStorage.getItem("wishlist")) ?? [];
-      this.wishlistItems.next(wishlist);
-    } catch(e) {}
-    
-    
+  constructor(
+    private oktaAuthService: OktaAuthStateService,
+    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) { 
+ 
+      this.oktaAuthService.authState$.subscribe(
+        (result) => {
+          this.isAuthenticated = result.isAuthenticated!;
+          this.getUserDetails();
+        }
+      )
+  }
+  
+  async getUserDetails():Promise<void> {
+    this.wishlistItems.next([]);
+    if(this.isAuthenticated){
+      let res = await this.oktaAuth.getUser();
+      this.userEmail = res.email;
+      try{
+        
+        let wishlist = JSON.parse(localStorage.getItem(this.userEmail)) ?? [];
+        this.wishlistItems.next(wishlist);
+      } catch(e) {}
+
+    } else {
+      try{
+        let wishlist = JSON.parse(localStorage.getItem("wishlist")) ?? [];
+        this.wishlistItems.next(wishlist);
+      } catch(e) {}
+    }
   }
 
   addToWishlist(theWishlist: any) { 
@@ -44,7 +70,7 @@ export class WishlistService {
     }
 
     this.wishlistItems.next(items);
-    localStorage.setItem("wishlist", JSON.stringify(items))
+    localStorage.setItem((this.isAuthenticated ? this.userEmail : "wishlist"), JSON.stringify(items));
   }
   remove(theWishlistItem: any) {
     
@@ -60,6 +86,6 @@ export class WishlistService {
     }
 
     this.wishlistItems.next(items);
-    localStorage.setItem("wishlist", JSON.stringify(items))  
+    localStorage.setItem((this.isAuthenticated ? this.userEmail : "wishlist"), JSON.stringify(items));
   }
 }

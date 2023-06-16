@@ -13,10 +13,6 @@ import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-interface Food {
-  value: string;
-  viewValue: string;
-}
 
 
 @Component({
@@ -25,11 +21,7 @@ interface Food {
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'},
-  ];
+
   products: Product[] = [];
   currentCategoryId: number = 1;
   previousCategoryId: number = 1;

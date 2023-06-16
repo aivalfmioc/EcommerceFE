@@ -28,6 +28,7 @@ export class ProductDetailsComponent implements OnInit {
   ratingcount = 0;
   totalrating = 0;
   Finalrating:any = 0.00;
+  unitsInStock: any;
 
   constructor(private productService: ProductService,
               private cartService: CartService,
@@ -75,6 +76,7 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.getProduct(theProductId).subscribe(
       data => {
         this.product =data
+        this.unitsInStock--;
       }
     )
   }

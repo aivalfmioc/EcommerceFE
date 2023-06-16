@@ -1,4 +1,4 @@
-<div class = "detail-section" *ngIf="product">
+<div class="detail-section" *ngIf="product">
     <div class="container-fluid">
 
         <br>
@@ -6,57 +6,84 @@
         <div class="row">
             <div class="col-md-6 col-sm-12">
                 <div class="product-box p-2 rounded shadow">
-                    
+
                     <div class="d-flex justify-content-between">
                         <div></div>
-                        <app-wishlist-icon [product]="product" ></app-wishlist-icon>
+                        <app-wishlist-icon [product]="product"></app-wishlist-icon>
                     </div>
-                    
+
                     <img src="{{ product.imageUrl }}" class="card-img-top p-2 rounded">
 
                     <div class="card-body">
-                
+
 
                         <div class="d-flex justify-content-between">
-                            <div>                                
+                            <div>
                                 <h5 class="card-title"> {{ product.name }}</h5>
                                 <p class="card-text">{{ product.unitPrice | currency:'USD'}}</p>
+
                             </div>
 
                             <div>
-                                <ngb-rating id="overall_rating" [max]="5" [readonly]="true" [rate]="Finalrating" ></ngb-rating>
+                                <ngb-rating id="overall_rating" [max]="5" [readonly]="true"
+                                    [rate]="Finalrating"></ngb-rating>
                                 <p>{{(Finalrating === 'NaN') ? 0 : Finalrating}} - rating from {{ratingcount}} users</p>
-                                
+
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <h4>Description</h4>
                 <p>{{ product.description }}</p>
-                <h5>Have you read this book? Input your rating!  
+                <p>Units in stock left: {{ product.unitsInStock }}</p>
+                <h5>Have you read this book? Input your rating!
 
-                     <!-- <ngb-rating [max]="5" (click)="postRating()" [formControl]="ratingcontrol"></ngb-rating> -->
+                    <!-- <ngb-rating [max]="5" (click)="postRating()" [formControl]="ratingcontrol"></ngb-rating> -->
 
-                     <ngb-rating *ngIf="isAuthenticated" [max]="5" (click)="postRating()" [formControl]="ratingcontrol"></ngb-rating>
-                     <a routerLink="/login" style="text-decoration: none;">
-                         <ngb-rating *ngIf="!isAuthenticated" [max]="5" [formControl]="ratingcontrol"></ngb-rating>
-                     </a>
+                    <ngb-rating *ngIf="isAuthenticated" [max]="5" (click)="postRating()"
+                        [formControl]="ratingcontrol"></ngb-rating>
+                    <a routerLink="/login" style="text-decoration: none;">
+                        <ngb-rating *ngIf="!isAuthenticated" [max]="5" [formControl]="ratingcontrol"></ngb-rating>
+                    </a>
 
                 </h5>
                 <div class="d-flex">
-                    <button (click)="addToCart()"class="btn btn-primary btn-sm" style="margin-right: 10px;">Add to cart</button> 
+                    <button (click)="addToCart()" class="btn btn-primary btn-sm" style="margin-right: 10px;">Add to
+                        cart</button>
                 </div>
+                <div>
 
+                </div>
                 <br>
+                <div class="form-group">
+                    <h3>Leave a review</h3>
+                    <form>
+                        <textarea class="form-control" rows="5" placeholder="Your comment"></textarea>
+                        <br>
+                        <button class="btn btn-success btn-md pull-right">Comment</button>
+                        <br />
+                        <hr />
+                        <h3>Comments</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="cmt in coments">
+                                <a href="" ng-click="posy_cmt($home)"><span class="glyphicon glyphicon-trash"
+                                        style="color:red; float:right;"></span></a>
+                            </li>
+                        </ul>
+
+
+                    </form>
+
+                </div>
                 <a routerLink="/products" class="mt-5">Back to Product List</a>
             </div>
         </div>
 
-        
+
 
     </div>
 
