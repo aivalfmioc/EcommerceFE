@@ -9,6 +9,11 @@ export class ProductCategory {
 export interface Rating {
     id: number;
     productId: number;
-    email: string;
+    customer: {
+        email: string;
+        firstName: string;
+        lastName: string;
+    }
     ratingNumber: number;
+    description: string;
 }

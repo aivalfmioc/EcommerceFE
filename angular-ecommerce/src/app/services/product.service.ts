@@ -10,9 +10,9 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductService {
 
-  private baseUrl =  environment.luv2shopApiUrl + '/products';
-  private categoryUrl =  environment.luv2shopApiUrl +'/product-category';
-  private ratingUrl =  environment.luv2shopApiUrl +'/rating/';
+  private baseUrl =  environment.bookyApiUrl + '/products';
+  private categoryUrl =  environment.bookyApiUrl +'/product-category';
+  private ratingUrl =  environment.bookyApiUrl +'/rating/';
   constructor(private httpClient: HttpClient) { }
 
   getProduct(theProductId: number): Observable<Product> {

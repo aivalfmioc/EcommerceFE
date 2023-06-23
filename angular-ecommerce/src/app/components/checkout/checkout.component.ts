@@ -166,8 +166,6 @@ export class CheckoutComponent implements OnInit {
     //get cart items
     const cartItems = this.cartService.cartItems;
 
- 
-    //create orderItems from cartItems
     let orderItems: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem.imageUrl!, tempCartItem.unitPrice!, tempCartItem.quantity, tempCartItem.id!));
  
     //decrease quantity
@@ -192,9 +190,14 @@ export class CheckoutComponent implements OnInit {
     //call REST API via the checkoutservice
     // if valid form then create payment intent, confirm card payment place order
     if(!this.checkoutFormGroup.invalid && this.displayError.textContent === "" ){
+      console.log("INSIDE ============================= ");
+      
       this.isDisabled = true;
       this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
+
+          console.log("INSIDE ============================= 123 ");
+
           this.stripe.confirmCardPayment(paymentIntentResponse.client_secret, {
             payment_method: {
               card: this.cardElement,
@@ -209,7 +212,8 @@ export class CheckoutComponent implements OnInit {
                 }
               }
             }
-          }, { handleActions: false})
+          }, 
+          { handleActions: false})
           .then((result:any) => {
             if(result.error) {
               alert(`There was an error: ${result.error.message}`);

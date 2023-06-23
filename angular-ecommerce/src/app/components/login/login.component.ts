@@ -3,6 +3,8 @@ import { OKTA_AUTH } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
 import myAppConfig from 'src/app/config/my-app-config';
 import OktaSignIn from '@okta/okta-signin-widget';
+import { config } from 'rxjs/internal/config';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,6 +24,11 @@ export class LoginComponent implements OnInit {
         issuer: myAppConfig.oidc.issuer,
         scopes: myAppConfig.oidc.scopes
       },
+      idps: [
+        { type: 'GOOGLE', id: '0oaa1xr1jrSZvE9Xe5d7' }
+      ],
+    idpDisplay : "SECONDARY",
+
       useClassicEngine: true,
       features: { registration:true }
     });

@@ -47,30 +47,24 @@ export class WishlistService {
   }
 
   addToWishlist(theWishlist: any) { 
-    // // check if we already have the item in our cart
+    // // check if we already have the item in our wishlist
     let alreadyExistsInWishlist: boolean = false;
     let existingWishlistItem: Wishlist = undefined;
-
     let items:any = this.wishlistItems.getValue();
-  
     if (items.length > 0) {
-    //   // find the item in the cart based on item id
-
+       // find the item in the wishlist based on item id
       existingWishlistItem = items.find( tempWishlistItem =>tempWishlistItem.id === theWishlist.id ) ;
-    //   // check if we found it
+      // check if we found it
       alreadyExistsInWishlist = (existingWishlistItem != undefined);
     }
-
     if (alreadyExistsInWishlist) {
-      // increment the quantity
     }
     else {
       // just add the item to the array
       items.push(theWishlist);
     }
-
     this.wishlistItems.next(items);
-    localStorage.setItem((this.isAuthenticated ? this.userEmail : "wishlist"), JSON.stringify(items));
+    localStorage.setItem((this.isAuthenticated ? this.userEmail : "wishlist"), JSON.stringify(items)); 
   }
   remove(theWishlistItem: any) {
     

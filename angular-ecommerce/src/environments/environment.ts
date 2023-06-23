@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  luv2shopApiUrl: "https://localhost:8443/api",
-  // luv2shopApiUrl: "https://localhost:8443/api",
+ // luv2shopApiUrl: "http://localhost:8443/api",
+  bookyApiUrl: "https://localhost:8443/api",
   stripePublishableKey: "pk_test_51NEFRqBB5cH2T4IyrzIPeNMecm1Sjm81po7QR2baT3XCQWIY7yzUoAsu8b2KkHReHg3SDHuDsPq6rvYHvCx9txuw00JKSCOLAU"
 };
 

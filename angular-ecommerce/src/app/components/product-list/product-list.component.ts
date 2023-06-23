@@ -26,10 +26,9 @@ export class ProductListComponent implements OnInit {
   currentCategoryId: number = 1;
   previousCategoryId: number = 1;
   searchMode: boolean = false;
-
   // new properties for pagination
   thePageNumber: number = 1;
-  thePageSize: number = 5;
+  thePageSize: number = 8;
   theTotalElements: number = 0;
 
   previousKeyword: string = "";
@@ -113,7 +112,7 @@ export class ProductListComponent implements OnInit {
 
   addToCart(theProduct: Product){
     console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`)
-    let theCartItem = new CartItem(theProduct.id, theProduct.name, theProduct.imageUrl, theProduct.unitPrice);
+    let theCartItem = new CartItem(theProduct.unitsInStock, theProduct.id, theProduct.name, theProduct.imageUrl, theProduct.unitPrice);
     this.cartService.addToCart(theCartItem)
   
   }

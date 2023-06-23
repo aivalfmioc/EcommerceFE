@@ -1,8 +1,5 @@
 <div>
     <nav>
-     
-    <button *ngIf="!isAuthenticated" routerLink="/login" class="security-btn">Login</button>
-    <button *ngIf="isAuthenticated" (click)="logout()" class="security-btn">Log out</button>
         <ul>
             <li *ngFor="let tempProductCategory of productCategories">
                 <a routerLink="/category/{{ tempProductCategory.id }}" routerLinkActive="active-link">{{ tempProductCategory.categoryName}}</a>

@@ -10,17 +10,14 @@ import { PaymentInfo } from '../common/payment-info';
 })
 export class CheckoutService {
 
-  private purchaseUrl = environment.luv2shopApiUrl+'/checkout/purchase';
-  
-  private paymentIntentUrl = environment.luv2shopApiUrl+'/checkout/payment-intent';
+  private purchaseUrl = environment.bookyApiUrl+'/checkout/purchase';
   constructor(private httpClient: HttpClient) { }
-
   placeOrder(purchase: Purchase): Observable<any>{
     return this.httpClient.post<Purchase>(this.purchaseUrl, purchase);
   } 
-
+  
+  private paymentIntentUrl = environment.bookyApiUrl+'/checkout/payment-intent';
   createPaymentIntent(paymentInfo: PaymentInfo): Observable<any>{
     return this.httpClient.post<PaymentInfo>(this.paymentIntentUrl, paymentInfo);
-
   }
 }

@@ -12,10 +12,10 @@
 <div class="main-content">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
-            <div class="col"   position= "relative" left="1490px">
-                <select (change)="sortProductByPrice($event.target)" position= "relative" left="1490px"  margin-inline="1520px">
+            <div class="col"   position= "relative" left="1490px" margin-inline="1520px">
+                <select (change)="sortProductByPrice($event.target)" position= "relative" left="1490px">
                   <option selected value="undefined" disabled   position= "relative" left="1490px">
-                    Choose Category
+                    Order by
                   </option>
                   <option value="l2h">Price: Low to High</option>
                   <option value="h2l">Price: High to Low</option>
@@ -46,12 +46,13 @@
                                   </a>
                                 <p class="card-text">{{ tempProduct.unitPrice | currency:'USD'}}</p>
                             </div>
-                            <button class="button_details">DETAILS</button>
+                            <button *ngIf="tempProduct.unitsInStock < 1" class="btn btn-danger" [disabled]="true">Sold Out</button>
+                            <button (click)="addToCart(tempProduct)" *ngIf="tempProduct.unitsInStock >= 1" class="btn btn-primary btn-sm"  [disabled]="false" margin-left="260px" style="margin-right: 10px;">Add to cart</button>
                         </div>
 
                         
                             <div class="icons" style="display: flex; flex-direction: column;">
-                                <button (click)="addToCart(tempProduct)" class='icon fa fa-shopping-cart'></button> 
+                                <button (click)="addToCart(tempProduct)" [disabled]="tempProduct.unitsInStock < 1" [style]="tempProduct.unitsInStock < 1 ? 'cursor: default;': ''" class='icon fa fa-shopping-cart'></button> 
                                 <app-wishlist-icon [product]="tempProduct" [isHover]="true" ></app-wishlist-icon>
                             </div>
                             
@@ -84,7 +85,6 @@
             <!-- begin footer -->
             <div class = "footer-pagination">
                     <div class="row">
-                    
                         <div class="col-md-1">
                             <div class="row">
                                 <div>
@@ -101,9 +101,9 @@
                                     <span class="mr-2">Page Size</span>
                                     <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
                                             <option>2</option>   
-                                            <option selected="true">5</option>
-                                           <option>10</option> 
-                                           <option>20</option> 
+                                            <option selected="true">8</option>
+                                           <option>16</option> 
+                                           <option>32</option> 
                                            <option>50</option>
                                     </select>
                                 

@@ -44,7 +44,9 @@ export class CartService {
 
     if (alreadyExistsInCart) {
       // increment the quantity
-      existingCartItem.quantity++;
+      if (existingCartItem.quantity < existingCartItem.unitsInStock) {
+        existingCartItem.quantity++;
+      }
     }
     else {
       // just add the item to the array
@@ -61,8 +63,10 @@ export class CartService {
     let totalQuantityValue: number = 0;
 
     for (let currentCartItem of this.cartItems) {
-      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
-      totalQuantityValue += currentCartItem.quantity;
+      if(currentCartItem.unitsInStock >= 1) { // TODO: need to change to >= means if having one of more value then show into cart
+        totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
+        totalQuantityValue += currentCartItem.quantity;
+      }
     }
 
     // publish the new values ... all subscribers will receive the new data

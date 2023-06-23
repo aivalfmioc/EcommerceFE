@@ -34,6 +34,7 @@ import myAppConfig from './config/my-app-config';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
 import { Order } from './common/order';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -46,6 +47,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 // import player from 'lottie-web';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { WishlistIconComponent } from './common/wishlist/wishlist-icon/wishlist-icon.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 const oktaConfig = myAppConfig.oidc;
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -109,7 +111,9 @@ const routes: Routes = [
     MatSelectModule,
     NgFor,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    NgxExtendedPdfViewerModule,
+    PdfViewerModule
     // LottieModule
   ],
   schemas: [

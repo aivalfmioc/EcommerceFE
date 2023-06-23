@@ -1,29 +1,20 @@
 <div class="detail-section" *ngIf="product">
     <div class="container-fluid">
-
         <br>
-
         <div class="row">
             <div class="col-md-6 col-sm-12">
                 <div class="product-box p-2 rounded shadow">
-
                     <div class="d-flex justify-content-between">
                         <div></div>
                         <app-wishlist-icon [product]="product"></app-wishlist-icon>
                     </div>
-
                     <img src="{{ product.imageUrl }}" class="card-img-top p-2 rounded">
-
                     <div class="card-body">
-
-
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h5 class="card-title"> {{ product.name }}</h5>
                                 <p class="card-text">{{ product.unitPrice | currency:'USD'}}</p>
-
                             </div>
-
                             <div>
                                 <ngb-rating id="overall_rating" [max]="5" [readonly]="true"
                                     [rate]="Finalrating"></ngb-rating>
@@ -37,43 +28,85 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-12">
-                <h4>Description</h4>
+                <h3>{{ product.name }} </h3>
+                <h4>{{ product.sku}}</h4>
                 <p>{{ product.description }}</p>
                 <p>Units in stock left: {{ product.unitsInStock }}</p>
                 <h5>Have you read this book? Input your rating!
 
-                    <!-- <ngb-rating [max]="5" (click)="postRating()" [formControl]="ratingcontrol"></ngb-rating> -->
+                    <ngb-rating [max]="5" (click)="open()" [formControl]="ratingcontrol"></ngb-rating>
 
-                    <ngb-rating *ngIf="isAuthenticated" [max]="5" (click)="postRating()"
+                    <!-- <ngb-rating *ngIf="isAuthenticated" [max]="5" (click)="postRating()"
                         [formControl]="ratingcontrol"></ngb-rating>
                     <a routerLink="/login" style="text-decoration: none;">
                         <ngb-rating *ngIf="!isAuthenticated" [max]="5" [formControl]="ratingcontrol"></ngb-rating>
-                    </a>
+                    </a> -->
 
                 </h5>
+
+
+                <ng-template #content let-modal>
+                    <div class="modal-header" width="1000px" height="1000px">
+                        <h4 class="modal-title" id="modal-basic-title">{{ product.name }}</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" height=2000 width=1000   >
+                        <iframe frameborder="0" scrolling="no" style="border:0px" src="/assets/pdf/2.pdf"  [width]=1000 [height]=1000></iframe>
+                        <!-- <iframe height="1000px" width="1000px" src="/assets/pdf/book.pdf" frameborder="0"></iframe> -->
+                   </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark"
+                            (click)="modal.close('Save click')">Close</button>
+                    </div>
+                </ng-template>
                 <div class="d-flex">
-                    <button (click)="addToCart()" class="btn btn-primary btn-sm" style="margin-right: 10px;">Add to
+                    <button *ngIf="product.unitsInStock < 1" class="btn btn-danger" [disabled]="true">Sold Out</button>
+                    <button *ngIf="product.unitsInStock >= 1" (click)="addToCart(product)" class="btn btn-primary btn-sm"
+                        style="margin-right: 10px;">Add to
                         cart</button>
+                        
+                <button class="btn btn-lg btn-outline-primary" (click)="openPDF(content)">Preview book</button>
                 </div>
                 <div>
 
                 </div>
                 <br>
                 <div class="form-group">
-                    <h3>Leave a review</h3>
+                    <!-- <h3>Leave a review</h3> -->
                     <form>
-                        <textarea class="form-control" rows="5" placeholder="Your comment"></textarea>
+                        <!-- <textarea name="description" class="form-control" rows="5" placeholder="Your comment" [(ngModel)]="description"></textarea>
                         <br>
-                        <button class="btn btn-success btn-md pull-right">Comment</button>
+                        <button type="button" class="btn btn-success btn-md pull-right" (click)="postRating()">Comment</button>
                         <br />
-                        <hr />
-                        <h3>Comments</h3>
-                        <ul class="list-group">
+                        <hr /> -->
+
+                        <h3>Reviews</h3>
+                        <!-- <ul class="list-group">
                             <li class="list-group-item" ng-repeat="cmt in coments">
                                 <a href="" ng-click="posy_cmt($home)"><span class="glyphicon glyphicon-trash"
                                         style="color:red; float:right;"></span></a>
                             </li>
-                        </ul>
+                        </ul> -->
+
+                        <div class="bg-white p-3 rounded m-2" *ngIf="userRating">
+                            <b>Review by - {{ userRating.customer.firstName }}</b><br>
+                            <ngb-rating id="overall_rating" [max]="5" [readonly]="true"
+                                [rate]="userRating.ratingNumber"></ngb-rating>
+                            {{userRating.description}}
+                        </div>
+
+
+                        <div *ngFor="let item of allRatings">
+                            <div class="bg-white p-3 rounded m-2" *ngIf="item.customer.email !== userEmail">
+                                <b>{{ item.customer.firstName }}</b><br>
+                                {{item.description}}
+                                <ngb-rating id="overall_rating" [max]="5" [readonly]="true"
+                                    [rate]="item.ratingNumber"></ngb-rating>
+                            
+                            </div>
+                        </div>
 
 
                     </form>
@@ -88,3 +121,30 @@
     </div>
 
 </div>
+
+
+
+
+<div class="modal fade my-modal" tabindex="-1" role="dialog" #myModal>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Leave a Review</h5>
+                <button type="button" class="close" (click)="close()" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea name="description" class="form-control" rows="5" placeholder="Your comment"
+                    [value]="description" #descValue></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-md pull-right"
+                    (click)="saveDesc(descValue)">Comment</button>
+                <!-- <button type="button" class="btn btn-secondary"  (click)="close()" >Close -->
+                <!-- </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+  

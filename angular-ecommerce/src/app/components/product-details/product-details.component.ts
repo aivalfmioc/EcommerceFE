@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CartItem } from 'src/app/common/cart-item';
 import { Product } from 'src/app/common/product';
@@ -10,6 +10,7 @@ import { Wishlist } from 'src/app/common/wishlist';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
 import OktaAuth from '@okta/okta-auth-js';
 import { Rating } from 'src/app/common/product-category';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-details',
@@ -20,25 +21,33 @@ export class ProductDetailsComponent implements OnInit {
 
   product!: Product;
   isAuthenticated: boolean = false;
-  userEmail:string = "";
+  userEmail:string = '';
   ratingcontrol = new FormControl(0);
-  allRatings = [];
+  allRatings:Rating[] = [];
+  userRating:Rating;
 
+  description:string;
   
   ratingcount = 0;
   totalrating = 0;
   Finalrating:any = 0.00;
   unitsInStock: any;
 
+  @ViewChild('myModal', { static: true }) myModal: ElementRef;
+  elm: HTMLElement;
+
   constructor(private productService: ProductService,
               private cartService: CartService,
               private wishlistService: WishlistService,
               private route: ActivatedRoute,
               private oktaAuthService: OktaAuthStateService,
-              @Inject(OKTA_AUTH) private oktaAuth: OktaAuth
-            ) { }
+              private modalService: NgbModal,
+              @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
+    ) { }
 
   ngOnInit(): void {
+       this.elm = this.myModal.nativeElement as HTMLElement;
+
 
     this.oktaAuthService.authState$.subscribe(
       (result) => {
@@ -51,6 +60,13 @@ export class ProductDetailsComponent implements OnInit {
         this.handleProductDetails();
       }
     )
+  }
+  openPDF(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   async getUserDetails():Promise<void> {
@@ -84,35 +100,35 @@ export class ProductDetailsComponent implements OnInit {
   postRating():void {
     const theProductId: number = +this.route.snapshot.paramMap.get('id')!;
     let rating:Rating = {
-      email: this.userEmail,
+      customer: {
+        email: this.userEmail,
+        firstName: '',
+        lastName: ''
+      },
       id: 0,
       productId: theProductId,
-      ratingNumber: this.ratingcontrol?.value
+      ratingNumber: this.ratingcontrol?.value,
+      description: this.description,
     };
     
     this.productService.postRating(rating).subscribe(ratings => {
       this.calculateRatings(ratings);    
     })
-
   }
 
   calculateRatings(ratings:Rating[]):void {
+    this.allRatings = ratings;
+
     this.ratingcount = ratings.length;
       this.totalrating = 0;
-
-      
-      console.log("============================================= enauk");
-
-      console.log(this.userEmail);
-
-      console.log(ratings);
-      
       
 
       ratings.map(item => {
         this.totalrating += item.ratingNumber;
-        if(this.userEmail === item.email) {
+        if(this.userEmail === item.customer.email) {
           this.ratingcontrol.setValue(item.ratingNumber); 
+          this.description = item.description;
+          this.userRating = item;
         }
       })
 
@@ -120,17 +136,38 @@ export class ProductDetailsComponent implements OnInit {
       
   }
 
-  addToCart(){
+  addToCart(theProduct: Product){
     console.log(`Adding to cart: ${this.product.name}, ${this.product.unitPrice}`);
-    let theCartItem = new CartItem(this.product.id, this.product.name, this.product.imageUrl, this.product.unitPrice);
+    let theCartItem = new CartItem(this.product.unitsInStock, this.product.id, this.product.name, this.product.imageUrl, this.product.unitPrice);
   
     this.cartService.addToCart(theCartItem);
   }
-
   // getRating(){
   //   this.ratingcount++;
   //   this.totalrating += this.ratingcontrol?.value || 0;
   //   this.Finalrating= (this.totalrating/this.ratingcount).toFixed(2);
   //   console.log(this.ratingcontrol.value);
   // }
+
+
+  close(): void {
+    this.elm.classList.remove('show');
+    setTimeout(() => {
+      this.elm.style.width = '0';
+    }, 75);
+
+
+    this.postRating();
+  }
+
+  saveDesc(descValue): void {
+    this.description = descValue.value;
+    this.close();
+  }
+
+  open(): void {
+      this.elm.classList.add('show');
+      this.elm.style.width = '100vw';
+  }
+
 }

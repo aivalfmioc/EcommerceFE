@@ -2,14 +2,20 @@
 
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
 
-body {
+btn btn-primary active{
+  margin-right:10px;
+  padding-right:110px;
+   margin-top:20px;
+  margin: 50px;
+}
+/* body {
   display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;
   text-align: center;
   background: #1A1E23;
-}
+} */
 
 ul {
     align-items: center;
