@@ -12,14 +12,19 @@
 <div class="main-content">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
-            <div class="col"   position= "relative" left="1490px" margin-inline="1520px">
-                <select (change)="sortProductByPrice($event.target)" position= "relative" left="1490px">
-                  <option selected value="undefined" disabled   position= "relative" left="1490px">
-                    Order by
-                  </option>
-                  <option value="l2h">Price: Low to High</option>
-                  <option value="h2l">Price: High to Low</option>
-                </select>
+            
+            <div class="col">
+                <div class="d-flex justify-content-between">
+                    <div></div>
+                    <select (change)="sortProductByPrice($event.target)" class="custom-select">
+                        <option selected value="undefined" disabled>
+                          Order by
+                        </option>
+                        <option value="l2h">Price: Low to High</option>
+                        <option value="h2l">Price: High to Low</option>
+                      </select>
+                      
+                </div>
                 <!-- <mat-form-field>
                     <mat-label>Favorite food</mat-label>
                     <mat-option matIn *ngFor="let food of foods" [value]="food.value">
@@ -27,7 +32,8 @@
                       </mat-option>
                   </mat-form-field> -->
                 <p></p>
-              </div>
+            </div>
+            
             <div class="row">
                 <!--loop over collection of products-->
                 <div *ngFor="let tempProduct of products" class="col-md-3">
@@ -46,8 +52,11 @@
                                   </a>
                                 <p class="card-text">{{ tempProduct.unitPrice | currency:'USD'}}</p>
                             </div>
-                            <button *ngIf="tempProduct.unitsInStock < 1" class="btn btn-danger" [disabled]="true">Sold Out</button>
-                            <button (click)="addToCart(tempProduct)" *ngIf="tempProduct.unitsInStock >= 1" class="btn btn-primary btn-sm"  [disabled]="false" margin-left="260px" style="margin-right: 10px;">Add to cart</button>
+                            <div class="d-flex justify-content-around">                                
+                                <button *ngIf="tempProduct.unitsInStock < 1" class="btn btn-danger" [disabled]="true">Sold Out</button>
+                                <button (click)="addToCart(tempProduct)" *ngIf="tempProduct.unitsInStock >= 1" class="btn btn-primary btn-sm"  [disabled]="false" margin-left="260px" style="margin-right: 10px;" color="#205b8d">Add to cart</button>
+                            </div>
+
                         </div>
 
                         
@@ -56,7 +65,7 @@
                                 <app-wishlist-icon [product]="tempProduct" [isHover]="true" ></app-wishlist-icon>
                             </div>
                             
-                        
+                        <br>
                     </div>
 
                     <!-- <div class="product-box card">

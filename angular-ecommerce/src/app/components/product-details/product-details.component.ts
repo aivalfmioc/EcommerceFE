@@ -26,7 +26,7 @@ export class ProductDetailsComponent implements OnInit {
   allRatings:Rating[] = [];
   userRating:Rating;
 
-  description:string;
+  description:string = "";
   
   ratingcount = 0;
   totalrating = 0;
@@ -67,6 +67,8 @@ export class ProductDetailsComponent implements OnInit {
     }, (reason) => {
       // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+    let iframe = `<iframe frameborder="0" scrolling="no" style="border:0px" src="/assets/pdf/${this.product.id}.pdf"  width="100%" height="100%"></iframe>`;
+    document.getElementById("frameId").innerHTML = iframe;
   }
 
   async getUserDetails():Promise<void> {
@@ -118,12 +120,9 @@ export class ProductDetailsComponent implements OnInit {
 
   calculateRatings(ratings:Rating[]):void {
     this.allRatings = ratings;
-
     this.ratingcount = ratings.length;
-      this.totalrating = 0;
-      
-
-      ratings.map(item => {
+    this.totalrating = 0;
+    ratings.map(item => {
         this.totalrating += item.ratingNumber;
         if(this.userEmail === item.customer.email) {
           this.ratingcontrol.setValue(item.ratingNumber); 
@@ -131,9 +130,7 @@ export class ProductDetailsComponent implements OnInit {
           this.userRating = item;
         }
       })
-
-      this.Finalrating = (this.totalrating/this.ratingcount).toFixed(2);
-      
+      this.Finalrating = (this.totalrating/this.ratingcount).toFixed(2); 
   }
 
   addToCart(theProduct: Product){

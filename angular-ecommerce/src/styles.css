@@ -7,6 +7,33 @@
  .card {
      position: relative !important;
     }
+
+    .custom-select {
+        display: block;
+        width: 200px;
+        padding: 10px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+      }
+      
+      .custom-select:hover {
+        border-color: #999;
+      }
+      
+      .custom-select:focus {
+        border-color: #555;
+        box-shadow: 0 0 5px rgba(85, 85, 85, 0.5);
+      }
+      
+      .custom-select option {
+        padding: 10px;
+      }
+      
     
 .icons {
         position: absolute !important;
@@ -88,7 +115,9 @@ body{
     line-height:1.625;
     color:#666;
     -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale
+    -moz-osx-font-smoothing:grayscale;
+    background: #e5e5e5 !important;
+    background-color: #e5e5e5 !important;
 }
 
 ul{
